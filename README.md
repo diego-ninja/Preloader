@@ -296,9 +296,9 @@ This may become handy if you have your own script, or you just want to tinker ar
 
 ## Safe Preloader
 
-This packages comes with a handy Safe Preloader, located in `helpers/safe_preloader.php`.
+This package comes with a handy Safe Preloader, located in `helpers/safe_preloader.php`.
 
-What it does is very simple: it registers a shutdown function for PHP that is executed after the preload script finishes, and registers any error the script may have returned so you can debug it.
+What it does is very simple: it registers a shutdown function for PHP that is executed after the preload script finishes and registers any error the script may have returned so you can debug it.
 
 To use it, copy the file into an accessible path for PHP, and along with the real preloader script, reference it in your `php.ini`:
 
@@ -328,7 +328,7 @@ Technically speaking, the Opcache preloads the files in a different process, so 
 
 ## Example
 
-Okay. Let's say we have a codebase with thousand of files. We don't know any metrics, so we will generate a preloader script if the request hits the lottery 1 on 100, with a memory limit of 64MB.
+Okay. Let's say we have a codebase with thousands of files. We don't know any metrics, so we will generate a preloader script if the request hits the lottery 1 on 100, with a memory limit of 64MB.
 
 ```php
 <?php
@@ -353,7 +353,7 @@ Preloader::make()
 
 ## Security
 
-If you discover any security related issues, please email darkghosthunter@gmail.com instead of using the issue tracker.
+If you discover any security related issues, please email yosoy@diego.ninja instead of using the issue tracker.
 
 ## License
 
