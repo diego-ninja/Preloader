@@ -14,9 +14,9 @@ register_shutdown_function(static function (): void {
     if (!$error) {
         return;
     }
-    echo 'Preloader Script has stopped with an error:' . \PHP_EOL;
-    echo 'Message: ' . $error['message'] . \PHP_EOL;
-    echo 'File: ' . $error['file'] . \PHP_EOL;
+    echo 'Preloader Script has stopped with an error:' . PHP_EOL;
+    echo 'Message: ' . $error['message'] . PHP_EOL;
+    echo 'File: ' . $error['file'] . PHP_EOL;
 });
 
 // Uncomment the line below to enable the preloader.

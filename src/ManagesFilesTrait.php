@@ -12,6 +12,9 @@ trait ManagesFilesTrait
     protected Finder $excluded;
     protected bool $selfExclude = false;
 
+    /**
+     * @param string[]|string|Closure|Finder $directories
+     */
     public function append(array|string|Closure|Finder $directories): self
     {
         $this->appended = $this->findFiles($directories);
@@ -19,6 +22,9 @@ trait ManagesFilesTrait
         return $this;
     }
 
+    /**
+     * @param string[]|string|Closure|Finder $directories
+     */
     public function exclude(array|string|Closure|Finder $directories): self
     {
         $this->excluded = $this->findFiles($directories);
@@ -33,17 +39,27 @@ trait ManagesFilesTrait
         return $this;
     }
 
+    /**
+     * @param string[]|string|Closure|Finder $files
+     */
     protected function findFiles(array|string|Closure|Finder $files): Finder
     {
         if (is_callable($files)) {
             $files($finder = new Finder());
         } else {
-            $finder = (new Finder())->in($files);
+            if (is_string($files) || is_array($files)) {
+                $finder = (new Finder())->in($files);
+            } else {
+                $finder = $files;
+            }
         }
 
         return $finder->files();
     }
 
+    /**
+     * @return string[]
+     */
     protected function getFilesFromFinder(Finder $finder): array
     {
         $paths = [];

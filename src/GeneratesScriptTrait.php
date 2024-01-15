@@ -4,9 +4,9 @@ namespace Ninja\Preloader;
 
 trait GeneratesScriptTrait
 {
-    protected float $memory = self::MEMORY_LIMIT;
-    protected bool $useRequire = false;
-    protected ?string $autoloader = null;
+    protected float $memory        = self::MEMORY_LIMIT;
+    protected bool $useRequire     = false;
+    protected ?string $autoloader  = null;
     protected bool $ignoreNotFound = false;
 
     public function memoryLimit(float|int $limit): self
@@ -31,26 +31,26 @@ trait GeneratesScriptTrait
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getOpcacheConfig(): array
     {
         $opcache = $this->opcache->getStatus();
 
         return [
-            '@opcache_memory_used'   =>
-                number_format($opcache['memory_usage']['used_memory'] / 1024 ** 2, 1, '.', ''),
-            '@opcache_memory_free'   =>
-                number_format($opcache['memory_usage']['free_memory'] / 1024 ** 2, 1, '.', ''),
-            '@opcache_memory_wasted' =>
-                number_format($opcache['memory_usage']['wasted_memory'] / 1024 ** 2, 1, '.', ''),
-            '@opcache_files'         =>
-                $opcache['opcache_statistics']['num_cached_scripts'],
-            '@opcache_hit_rate'      =>
-                number_format($opcache['opcache_statistics']['opcache_hit_rate'], 2, '.', ''),
-            '@opcache_misses'        =>
-                $opcache['opcache_statistics']['misses'],
+            '@opcache_memory_used'   => number_format($opcache['memory_usage']['used_memory'] / 1024 ** 2, 1, '.', ''),
+            '@opcache_memory_free'   => number_format($opcache['memory_usage']['free_memory'] / 1024 ** 2, 1, '.', ''),
+            '@opcache_memory_wasted' => number_format($opcache['memory_usage']['wasted_memory'] / 1024 ** 2, 1, '.', ''),
+            '@opcache_files'         => $opcache['opcache_statistics']['num_cached_scripts'],
+            '@opcache_hit_rate'      => number_format($opcache['opcache_statistics']['opcache_hit_rate'], 2, '.', ''),
+            '@opcache_misses'        => $opcache['opcache_statistics']['misses'],
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getPreloaderConfig(): array
     {
         return [

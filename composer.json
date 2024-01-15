@@ -1,17 +1,14 @@
 {
     "name": "diego-ninja/preloader",
-    "type": "library",
     "description": "Preloader helper to create a PHP-ready preload script from Opcache.",
+    "license": "MIT",
+    "type": "library",
     "keywords": [
         "diego-ninja",
         "preloader",
         "php-8",
         "opcache"
     ],
-    "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "homepage": "https://github.com/diego-ninja/preloader",
     "authors": [
         {
             "name": "Italo Israel Baeza Cabrera",
@@ -24,35 +21,112 @@
             "role": "Developer"
         }
     ],
+    "homepage": "https://github.com/diego-ninja/preloader",
     "require": {
         "php": "^8.1",
-        "ext-json": "*",
-        "symfony/finder": "^4||^5||^6"
+        "ext-random": "*",
+        "symfony/finder": "^6 || ^7"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
+        "captainhook/captainhook": "^5.10",
+        "captainhook/plugin-composer": "^5.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+        "ergebnis/composer-normalize": "^2.30",
+        "friendsofphp/php-cs-fixer": "^3.40",
+        "icanhazstring/composer-unused": "^0.8.7",
+        "maglnet/composer-require-checker": "^4.5",
+        "php-parallel-lint/php-console-highlighter": "^1.0",
+        "php-parallel-lint/php-parallel-lint": "^1.3",
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-phpunit": "^1.3",
         "phpunit/phpunit": "^10",
-        "vimeo/psalm": "^5",
-        "squizlabs/php_codesniffer": "^3.5",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7"
+        "roave/security-advisories": "dev-latest"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Ninja\\Preloader\\" : "src/"
+            "Ninja\\Preloader\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\" : "tests/"
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "captainhook/plugin-composer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "phpstan": {
+            "autoload_directories": [
+                "src"
+            ],
+            "config_file": "phpstan.neon",
+            "exclude_analyse": [
+                "vendor"
+            ],
+            "includes": [
+                "extension.neon",
+                "extension.phpunit"
+            ],
+            "level": 8
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --coverage-clover build/logs/clover.xml"
+        "deps": "@dev:deps",
+        "dev:analyze": [
+            "@dev:analyze:phpstan"
+        ],
+        "dev:analyze:phpstan": "phpstan",
+        "dev:build:clean": "git clean -fX builds/",
+        "dev:deps": [
+            "@dev:deps:missing",
+            "@dev:deps:unused"
+        ],
+        "dev:deps:missing": "php vendor/bin/composer-require-checker --config-file=$(pwd)/crc.config.json",
+        "dev:deps:unused": "php vendor/bin/composer-unused",
+        "dev:lint": [
+            "@dev:lint:syntax",
+            "@dev:lint:style"
+        ],
+        "dev:lint:fix": "php-cs-fixer fix --config .php-cs-fixer.php src/ tests/",
+        "dev:lint:style": "php-cs-fixer check --config .php-cs-fixer.php src/ tests/",
+        "dev:lint:syntax": "parallel-lint --colors src/ tests/",
+        "dev:test": [
+            "@dev:lint",
+            "@dev:analyze",
+            "@dev:test:unit"
+        ],
+        "dev:test:coverage:ci": "phpunit --colors=always --coverage-text --coverage-clover build/coverage/clover.xml --coverage-cobertura build/coverage/cobertura.xml --coverage-crap4j build/coverage/crap4j.xml --coverage-xml build/coverage/coverage-xml --log-junit build/junit.xml",
+        "dev:test:coverage:html": "phpunit --colors=always --coverage-html build/coverage/coverage-html/",
+        "dev:test:unit": "phpunit --colors=always --testdox",
+        "dev:test:unit:debug": "phpunit --colors=always --testdox -d xdebug.profiler_enable=on",
+        "test": "@dev:test"
     },
-    "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+    "scripts-descriptions": {
+        "deps": "Checks for missing and unused dependencies.",
+        "dev:analyze": "Runs all static analysis checks.",
+        "dev:analyze:phpstan": "Runs the phpstan static analyzer.",
+        "dev:build:clean": "Cleans the build/ directory.",
+        "dev:deps": "Checks for missing and unused dependencies.",
+        "dev:deps:missing": "Checks for missing dependencies.",
+        "dev:deps:unused": "Checks for unused dependencies.",
+        "dev:lint": "Runs all linting checks.",
+        "dev:lint:fix": "Auto-fixes coding standards issues, if possible.",
+        "dev:lint:style": "Checks for coding standards issues.",
+        "dev:lint:syntax": "Checks for syntax errors.",
+        "dev:test": "Runs linting, static analysis, and unit tests.",
+        "dev:test:coverage:ci": "Runs unit tests and generates CI coverage reports.",
+        "dev:test:coverage:html": "Runs unit tests and generates HTML coverage report.",
+        "dev:test:unit": "Runs unit tests.",
+        "test": "Runs linting, static analysis, and unit tests."
     }
 }
