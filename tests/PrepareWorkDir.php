@@ -9,40 +9,48 @@ trait PrepareWorkDir
 {
     protected string $workdir;
 
+    /**
+     * @var array<string|int, array<string, int|string>>
+     */
     protected array $list = [
         'foo.php' => [ // 3
-            'hits' => 10,
-            'memory_consumption' => 1 * (1024 ** 2),
-            'last_used_timestamp' => 1400000000
+            'hits'                => 10,
+            'memory_consumption'  => 1024 ** 2,
+            'last_used_timestamp' => 1400000000,
         ],
         'bar.php' => [ // 1
-            'hits' => 20,
-            'memory_consumption' => 3 * (1024 ** 2),
-            'last_used_timestamp' => 1400000002
+            'hits'                => 20,
+            'memory_consumption'  => 3 * (1024 ** 2),
+            'last_used_timestamp' => 1400000002,
         ],
         'quz.php' => [ // 2
-            'hits' => 20,
-            'memory_consumption' => 5 * (1024 ** 2),
-            'last_used_timestamp' => 1400000001
+            'hits'                => 20,
+            'memory_consumption'  => 5 * (1024 ** 2),
+            'last_used_timestamp' => 1400000001,
         ],
         'qux.php' => [ // 4
-            'hits' => 5,
-            'memory_consumption' => 5 * (1024 ** 2),
-            'last_used_timestamp' => 1400000010
+            'hits'                => 5,
+            'memory_consumption'  => 5 * (1024 ** 2),
+            'last_used_timestamp' => 1400000010,
         ],
         'baz.php' => [ // 5
-            'hits' => 5,
-            'memory_consumption' => 6 * (1024 ** 2),
-            'last_used_timestamp' => 1400000010
-        ]
+            'hits'                => 5,
+            'memory_consumption'  => 6 * (1024 ** 2),
+            'last_used_timestamp' => 1400000010,
+        ],
     ];
 
-    protected function setWorkdir()
+    protected function setWorkdir(): void
     {
-        $this->workdir = realpath(__DIR__ . '/workdir');
+        $path = realpath(__DIR__ . '/workdir');
+        if ($path === false) {
+            $this->fail('Cannot find workdir.');
+        }
+
+        $this->workdir = $path;
     }
 
-    protected function prepareWorkdir()
+    protected function prepareWorkdir(): void
     {
         mkdir(implode(DIRECTORY_SEPARATOR, [$this->workdir, 'examples']));
         mkdir(implode(DIRECTORY_SEPARATOR, [$this->workdir, 'examples', 'test_a']));
@@ -59,7 +67,7 @@ trait PrepareWorkDir
         touch(implode(DIRECTORY_SEPARATOR, [$this->workdir, 'examples', 'test_b', 'baz.php']));
     }
 
-    protected function clearWorkdir()
+    protected function clearWorkdir(): void
     {
         if (is_file($preload = implode(DIRECTORY_SEPARATOR, [$this->workdir, 'preloader.php']))) {
             unlink($preload);

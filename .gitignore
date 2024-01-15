@@ -6,4 +6,7 @@ vendor
 coverage
 .phpunit.result.cache
 .phpunit.cache
+.php-cs-fixer.cache
+composer-unused.php
+crc.config.json
 

@@ -2,7 +2,6 @@ name: PHP Composer
 
 on:
   push:
-  pull_request:
 
 jobs:
   test:
@@ -39,7 +38,7 @@ jobs:
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-progress --no-suggest
 
       - name: Run Tests
-        run: composer run-script test
+        run: composer run-script dev:test:coverage:ci
 
       - name: Upload Coverage to Coveralls
         env:

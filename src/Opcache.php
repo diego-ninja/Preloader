@@ -6,6 +6,9 @@ use RuntimeException;
 
 class Opcache
 {
+    /**
+     * @var array<string, mixed>|false
+     */
     protected array|false $status;
 
     public function __construct()
@@ -13,6 +16,9 @@ class Opcache
         $this->status = opcache_get_status();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getStatus(): array
     {
         if ($this->status !== false) {
@@ -29,6 +35,9 @@ class Opcache
         return $this->getStatus()['opcache_enabled'];
     }
 
+    /**
+     * @return array<string, array<string, int>>
+     */
     public function getScripts(): array
     {
         return $this->getStatus()['scripts'];

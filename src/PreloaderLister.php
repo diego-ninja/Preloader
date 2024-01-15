@@ -6,12 +6,27 @@ use const DIRECTORY_SEPARATOR;
 
 class PreloaderLister
 {
+    /**
+     * @var array<string, array<string, int>>
+     */
     public array $list;
     public float $memory = Preloader::MEMORY_LIMIT;
+
     public bool $selfExclude = false;
+
+    /**
+     * @var string[]
+     */
     public array $appended = [];
+
+    /**
+     * @var string[]
+     */
     public array $excluded = [];
 
+    /**
+     * @return string[]
+     */
     public function build(): array
     {
         // Exclude "$PRELOAD$" phantom file
@@ -33,6 +48,10 @@ class PreloaderLister
         return array_unique($scripts);
     }
 
+    /**
+     * @param array<string, array<string, int>> $list
+     * @return array<string, array<string, int>>
+     */
     protected function excludePreloadVariable(array $list): array
     {
         unset($list['$PRELOAD$']);
@@ -40,10 +59,15 @@ class PreloaderLister
         return $list;
     }
 
+    /**
+     * @param array<string, array<string, int>> $scripts
+     * @return array<string, array<string, int>>
+     */
     protected function sortScripts(array $scripts): array
     {
         // There is no problem here with the Preloader.
         array_multisort(
+            /** @phpstan-ignore-next-line */
             array_column($scripts, 'hits'),
             SORT_DESC,
             array_column($scripts, 'last_used_timestamp'),
@@ -54,10 +78,14 @@ class PreloaderLister
         return $scripts;
     }
 
-    protected function cutByMemoryLimit($files): array
+    /**
+     * @param array<string, array<string, int>> $files
+     * @return string[]
+     */
+    protected function cutByMemoryLimit(array $files): array
     {
         // Exit early if the memory limit is zero (disabled).
-        if (! $limit = $this->memory * 1024 ** 2) {
+        if (!$limit = $this->memory * 1024 ** 2) {
             return array_keys($files);
         }
 
@@ -81,20 +109,44 @@ class PreloaderLister
         return $resulting;
     }
 
+    /**
+     * @param array<string, array<string, int>> $scripts
+     * @return array<string, array<string, int>>
+     */
     protected function exclude(array $scripts): array
     {
-        return array_diff_key($scripts, array_flip(array_merge($this->excluded, $this->excludedPackageFiles())));
+        return array_diff_key(
+            $scripts,
+            array_flip(
+                array_merge(
+                    $this->excluded,
+                    $this->excludedPackageFiles()
+                )
+            )
+        );
     }
 
+    /**
+     * @return string[]
+     */
     protected function excludedPackageFiles(): array
     {
+        $excluded = [];
         if ($this->selfExclude) {
-            return array_map(
-                static fn ($entry) => realpath($entry),
-                glob(realpath(__DIR__) . DIRECTORY_SEPARATOR . '*.php')
-            );
+            $current = realpath(__DIR__);
+            $files   = glob($current . DIRECTORY_SEPARATOR . '*.php');
+
+            if ($files === false) {
+                return [];
+            }
+
+            foreach ($files as $file) {
+                if ($filePath = realpath($file)) {
+                    $excluded[] = $filePath;
+                }
+            }
         }
 
-        return [];
+        return $excluded;
     }
 }
