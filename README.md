@@ -2,11 +2,12 @@
 Braden Collum - Unsplash (UL) #9HI8UJMSdZA](https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&h=400&q=80)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/diego-ninja/preloader.svg?style=flat)](https://packagist.org/packages/diego-ninja/preloader)
-[![Total Downloads](https://img.shields.io/packagist/dt/diego-ninja/preloader.svg?style=flat)](https://packagist.org/packages/diego-ninja/preloader)
+[![Total Downloads](https://img.shields.io/packagist/dt/diego-ninja/preloader.svg?style=flat&color=blue)](https://packagist.org/packages/diego-ninja/preloader)
 ![PHP Version](https://img.shields.io/packagist/php-v/diego-ninja/preloader.svg?style=flat)
-[![License](https://poser.pugx.org/darkghosthunter/preloader/license)](https://packagist.org/packages/darkghosthunter/preloader)
+[![License](https://poser.pugx.org/diego-ninja/preloader/license)](https://packagist.org/packages/darkghosthunter/preloader)
  ![Composer](https://github.com/diego-ninja/Preloader/workflows/PHP%20Composer/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/diego-ninja/Preloader/badge.svg?branch=master)](https://coveralls.io/github/diego-ninja/Preloader?branch=master)
+[![PHPStan Level 8](https://img.shields.io/badge/PHPStan-level%208-blue.svg)](https://github.com/diego-ninja/preloader/blob/main/.github/workflows/static-code-analysis.yml)
 
 # Opcache Preloader
 
@@ -47,7 +48,7 @@ If you need php 7.4 support please, use the aforementioned package.
 
 ## Requirements
 
-* PHP 8.0 or later.
+* PHP 8.1 or later.
 * [Opcache & Preloading enabled](https://www.php.net/manual/en/book.opcache.php) (`ext-opcache`).
 * Composer Autoloader (optional).
 
