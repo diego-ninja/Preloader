@@ -24,7 +24,6 @@
     "homepage": "https://github.com/diego-ninja/preloader",
     "require": {
         "php": "^8.1",
-        "ext-random": "*",
         "symfony/finder": "^6 || ^7"
     },
     "require-dev": {
